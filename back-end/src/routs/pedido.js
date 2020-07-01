@@ -14,9 +14,9 @@ router.get('/', (req,res)=>
     res.send('hello word')
 });
 
-router.get('/listarProductos', (req, res) =>
+router.get('/listarPedido', (req, res) =>
 { 
-    const sql = 'SELECT * FROM producto where estado="A"';
+    const sql = 'SELECT * FROM pedido where estado="A"';
     connection.query(sql, (err, results)=>{
       if(err) throw error;
       if(results.length>0){
@@ -27,10 +27,10 @@ router.get('/listarProductos', (req, res) =>
     } )
 });
 
-router.get('/consultarProducto/:id', (req, res) =>
+router.get('/consultarPedido/:id', (req, res) =>
 {
  const {id}= req.params
-  const sql =`SELECT * FROM producto where id_Producto=${id}`;
+  const sql =`SELECT * FROM pedido where id_Pedido=${id}`;
   connection.query(sql, (err, results)=>{
     if(err) throw error;
     if(results.length>0){
@@ -41,14 +41,13 @@ router.get('/consultarProducto/:id', (req, res) =>
   } ) 
 });
 
-router.post('/agregarProducto', (req, res) =>
+router.post('/agregarPedido', (req, res) =>
 { 
-  const sql = 'INSERT INTO producto SET ?';
-  const usuario = {
-    id_Producto: req.body.id_Producto,
-    id_Categoria: req.body.id_Categoria,
-    nombre : req.body.nombre,
-    precio: req.body.precio,
+  const sql = 'INSERT INTO pedido SET ?';
+  const pedido = {
+    id_Pedido: req.body.id_Pedido,
+    id_Transaccion: req.body.id_Transaccion,
+    total: req.body.total,
     estado: "A"
 
   }
@@ -60,35 +59,35 @@ router.post('/agregarProducto', (req, res) =>
 
 });
 
-router.put('/modificarProducto/:id', (req, res) =>
+router.put('/modificarPedido/:id', (req, res) =>
 {
   
   const{id} = req.params; 
-  const {nombre, precio} =
+  const {total} =
   req.body;
 
-  const sql = `UPDATE producto SET nombre= '${nombre}', precio= '${precio}'
-  where id_Producto=${id}`;
+  const sql = `UPDATE pedido SET total= '${total}'
+  where id_Pedido=${id}`;
 
   connection.query(sql, error => {
     if(error) throw error;
-    res.send("Producto modificado");
+    res.send("Pedido modificado");
   })
 
 
 });
 
-router.delete('/eliminarProducto/:id', (req, res) =>
+router.delete('/eliminarPedido/:id', (req, res) =>
 { 
   const{id} = req.params; 
   const {estado} =
   req.body;
 
-  const sql = `UPDATE producto SET estado="I" where id_Producto=${id}`;
+  const sql = `UPDATE pedido SET estado="I" where id_Pedido=${id}`;
 
   connection.query(sql, error => {
     if(error) throw error;
-    res.send("Producto eliminado");
+    res.send("Pedido eliminado");
   })
 
 });
