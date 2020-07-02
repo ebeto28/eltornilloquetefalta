@@ -44,7 +44,7 @@ router.get('/consultarCliente/:id', (req, res) =>
 router.post('/agregarCliente', (req, res) =>
 { 
   const sql = 'INSERT INTO clientes SET ?';
-  const usuario = {
+  const clientes = {
     id_Clientes: req.body.id_Clientes,
     contrasenna: req.body.contrasenna,
     nombre : req.body.nombre,
