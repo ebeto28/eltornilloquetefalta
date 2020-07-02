@@ -44,7 +44,7 @@ router.get('/consultarCategoria/:id', (req, res) =>
 router.post('/agregarCategoria', (req, res) =>
 { 
   const sql = 'INSERT INTO categoria SET ?';
-  const usuario = {
+  const categoria = {
     id_Categoria: req.body.id_Categoria,
     descripcion: req.body.descripcion,
     estado: "A"
@@ -60,10 +60,8 @@ router.post('/agregarCategoria', (req, res) =>
 
 router.put('/modificarCategoria/:id', (req, res) =>
 {
-  
   const{id} = req.params; 
-  const {descripcion} =
-  req.body;
+  const {descripcion} = req.body;
 
   const sql = `UPDATE categoria SET descripcion = '${descripcion}' where id_Categoria=${id}`;
 
@@ -71,8 +69,6 @@ router.put('/modificarCategoria/:id', (req, res) =>
     if(error) throw error;
     res.send("Categoria modificada");
   })
-
-
 });
 
 router.delete('/eliminarCategoria/:id', (req, res) =>

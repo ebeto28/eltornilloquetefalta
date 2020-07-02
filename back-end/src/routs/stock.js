@@ -44,7 +44,7 @@ router.get('/consultarStock/:id', (req, res) =>
 router.post('/agregarStock', (req, res) =>
 { 
   const sql = 'INSERT INTO stock SET ?';
-  const usuario = {
+  const stock = {
     id_Stock: req.body.id_Stock,
     id_Producto: req.body.id_Producto,
     cantidad: req.body.cantidad,
