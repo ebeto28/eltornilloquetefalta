@@ -25,7 +25,7 @@ router.get('/listarClientes', (req, res) =>
         res.send('No hay nada')
       }
     } )
-});
+}); 
 
 router.get('/consultarCliente/:id', (req, res) =>
 {
