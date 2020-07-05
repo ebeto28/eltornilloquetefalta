@@ -14,7 +14,7 @@ router.get('/', (req,res)=>
     res.send('hello word')
 });
 
-router.get('/listarProductos', (req, res) =>
+router.get('/listarProducto', (req, res) =>
 { 
     const sql = 'SELECT * FROM producto where estado="A"';
     connection.query(sql, (err, results)=>{

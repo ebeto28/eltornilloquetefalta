@@ -34,6 +34,20 @@ const routes = [
 
     component: () =>import("../views/Cliente.vue")
 
+  },
+  {
+    path: '/getPedido',
+    name: 'getPedido',
+
+    component: () =>import("../views/pedido.vue")
+
+  },
+  {
+    path: '/getProducto',
+    name: 'getProducto',
+
+    component: () =>import("../views/producto.vue")
+
   }
 
 
