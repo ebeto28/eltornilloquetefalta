@@ -14,7 +14,7 @@ router.get('/', (req,res)=>
     res.send('hello word')
 });
 
-router.get('/listarProductos', (req, res) =>
+router.get('/listarProducto', (req, res) =>
 { 
     const sql = 'SELECT * FROM producto where estado="A"';
     connection.query(sql, (err, results)=>{
@@ -44,15 +44,14 @@ router.get('/consultarProducto/:id', (req, res) =>
 router.post('/agregarProducto', (req, res) =>
 { 
   const sql = 'INSERT INTO producto SET ?';
-  const usuario = {
-    id_Producto: req.body.id_Producto,
+  const producto = {
     id_Categoria: req.body.id_Categoria,
     nombre : req.body.nombre,
     precio: req.body.precio,
     estado: "A"
 
   }
-  connection.query(sql, clientes, error => {
+  connection.query(sql, producto, error => {
     if(error) throw error;
   })
 

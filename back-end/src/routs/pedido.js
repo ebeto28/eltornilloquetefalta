@@ -45,13 +45,13 @@ router.post('/agregarPedido', (req, res) =>
 { 
   const sql = 'INSERT INTO pedido SET ?';
   const pedido = {
-    id_Pedido: req.body.id_Pedido,
+
     id_Transaccion: req.body.id_Transaccion,
     total: req.body.total,
     estado: "A"
 
   }
-  connection.query(sql, clientes, error => {
+  connection.query(sql, pedido, error => {
     if(error) throw error;
   })
 
