@@ -46,7 +46,12 @@
             
         </tbody>
  </table>
-        <form v-if="!editar">
+ <br>
+ <b-button @click="mas=true" class="btn-warning btn-sm" >+ agregar datos de usuario</b-button>
+       <br>
+       
+        <form v-if="!editar && mas">
+            <br><br>
                     <h3>Agregar</h3>
 
                     <input type="text" class="form-control my-2" placeholder="Cedula" v-model="clientes.id_Clientes">
@@ -100,6 +105,7 @@
 export default {
     data(){
         return{
+            mas:false,
             clienteEditar:{},
             cliente:[],
             editar:false,
