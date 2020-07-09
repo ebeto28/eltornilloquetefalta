@@ -75,8 +75,8 @@ router.put('/modificarClientes/:id', (req, res) =>
   req.body;
 
   const sql = `UPDATE clientes SET contrasenna= '${contrasenna}' , nombre= '${nombre}', apellidos='${apellidos}',
-  telefono='${telefono}', codigopostal='${codigopostal}', pais= '${pais}', provincia= '${provincia} , canton= '${canton} , 
-  distrito= '${distrito}, direccionexacta= '${direccionexacta}'
+  telefono='${telefono}', codigopostal='${codigopostal}', pais= '${pais}', provincia= '${provincia}' , canton= '${canton}' , 
+  distrito= '${distrito}', direccionexacta= '${direccionexacta}'
   where id_Clientes=${id}`;
 
   connection.query(sql, error => {
