@@ -48,6 +48,13 @@ const routes = [
 
     component: () =>import("../views/producto.vue")
 
+  },
+  {
+    path: '/getStock',
+    name: 'getStock',
+
+    component: () =>import("../views/stock.vue")
+
   }
 
 
