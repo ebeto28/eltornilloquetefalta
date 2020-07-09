@@ -62,7 +62,7 @@ router.put('/modificarCarrito/:id', (req, res) => {
     const { id_Cliente, id_Producto, cantidad, subtotal } =
     req.body;
 
-    const sql = `UPDATE carrito SET id_Cliente= '${id_Cliente}' , id_Producto= '${id_Producto}', apellidos='${apellidos}',
+    const sql = `UPDATE carrito SET id_Cliente= '${id_Cliente}' , id_Producto= '${id_Producto}', 
   cantidad='${cantidad}', subtotal='${subtotal}'
   where id_Transaccion=${id}`;
 
