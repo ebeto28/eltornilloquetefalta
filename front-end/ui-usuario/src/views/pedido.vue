@@ -95,7 +95,7 @@ export default {
             })
             .then(res=>res.json())
             .then(data=>{console.log(data)
-            this.Pedido=data})
+            this.pedido=data})
             .catch(e=>{
                 console.log(e.response);
             })
