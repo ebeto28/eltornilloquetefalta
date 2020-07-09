@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <Navegacion />
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
@@ -13,6 +14,20 @@
     <router-view />
   </div>
 </template>
+<script>
+import Navegacion from '@/components/layout/Navegacion'
+export default {
+  components:{
+    Navegacion
+  }
+}
+</script>
+
+<style lang="scss">
+@import './scss/App.scss';
+
+
+</style>
 
 <style>
 #app {
