@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-                <table class="table">
+                <table class="table" v-if="!editar">
                     <thead>
                         <tr>
                         
@@ -39,18 +39,23 @@
             <td>{{item.distrito}}</td>
             <td>{{item.direccionexacta}}</td>
             <td> <b-button @click="eliminarCliente(item.id_Clientes)" class="btn-danger btn-sm" >Eliminar</b-button></td>
-             <td> <b-button @click="activarEdicion(item.id_Usuario)" class="btn-warning btn-sm" >Editar</b-button></td>
+             <td> <b-button @click="activarEdicion(item.id_Clientes)" class="btn-warning btn-sm" >Editar</b-button></td>
            
 
           </tr>
             
         </tbody>
  </table>
-        <form  >
+ <br>
+ <b-button @click="mas=true" class="btn-warning btn-sm" >+ agregar datos de usuario</b-button>
+       <br>
+       
+        <form v-if="!editar && mas">
+            <br><br>
                     <h3>Agregar</h3>
 
                     <input type="text" class="form-control my-2" placeholder="Cedula" v-model="clientes.id_Clientes">
-                    <input type="text" class="form-control my-2" placeholder="Contraseña" v-model="clientes.contrasenna" >
+                    <input type="password" class="form-control my-2" placeholder="Contraseña" v-model="clientes.contrasenna" >
                     <input type="text" class="form-control my-2" placeholder="Nombre" v-model="clientes.nombre" >
                     <input type="text" class="form-control my-2" placeholder="Apellidos" v-model="clientes.apellidos">
                     <input type="text" class="form-control my-2" placeholder="Telefono" v-model="clientes.telefono" >
@@ -67,6 +72,28 @@
 
                 </form>
 
+                <form v-if="editar">
+                    <h3>Editar Cliente</h3>
+
+                    
+                    <input type="password" class="form-control my-2" placeholder="Contraseña" v-model="clienteEditar[0].contrasenna" >
+                    <input type="text" class="form-control my-2" placeholder="Nombre" v-model="clienteEditar[0].nombre" >
+                    <input type="text" class="form-control my-2" placeholder="Apellidos" v-model="clienteEditar[0].apellidos">
+                    <input type="text" class="form-control my-2" placeholder="Telefono" v-model="clienteEditar[0].telefono" >
+                    <input type="text" class="form-control my-2" placeholder="Codigo Postal" v-model="clienteEditar[0].codigopostal" >
+                    <input type="text" class="form-control my-2" placeholder="Pais" v-model="clienteEditar[0].pais" >
+                    <input type="text" class="form-control my-2" placeholder="Provincia" v-model="clienteEditar[0].provincia" >
+                    <input type="text" class="form-control my-2" placeholder="Canton" v-model="clienteEditar[0].canton" >
+                    <input type="text" class="form-control my-2" placeholder="Distrito" v-model="clienteEditar[0].distrito" >
+                    <input type="text" class="form-control my-2" placeholder="Direccion" v-model="clienteEditar[0].direccionexacta" >
+                    
+                   
+                    <br>
+                    <b-button class="btn-success my-2" type="submit" @click.prevent="editarCliente(clienteEditar[0].id_Clientes)">Editar</b-button>
+                    <br>
+                    <b-button class=" my-2 " type="submit" v-on:click="editar=false">Cancelar</b-button>
+                </form>
+
 
     </div>
         
@@ -78,7 +105,10 @@
 export default {
     data(){
         return{
+            mas:false,
+            clienteEditar:{},
             cliente:[],
+            editar:false,
             clientes:{
                 id_Clientes:"",
                 contrasenna:"",
@@ -100,6 +130,22 @@ export default {
         this.listarCategoria();
     },
     methods:{
+         editarCliente: function(id){
+         console.log("entra a editar");
+        fetch(`http://localhost:3000/modificarClientes/${id}`, {
+                method: 'PUT', // or 'PUT'
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+               body: JSON.stringify({id_Clientes:this.clienteEditar.id_Clientes,
+                contrasenna:`${this.clienteEditar[0].contrasenna}`,nombre:`${this.clienteEditar[0].nombre}`
+                ,apellidos:`${this.clienteEditar[0].apellidos}`,
+                telefono:`${this.clienteEditar[0].telefono}`,codigopostal:`${this.clienteEditar[0].codigopostal}`,pais:`${this.clienteEditar[0].pais}`
+                ,provincia:`${this.clienteEditar[0].provincia}`,canton:`${this.clienteEditar[0].canton}`,distrito:`${this.clienteEditar[0].distrito}`,direccionexacta:`${this.clienteEditar[0].direccionexacta}`
+                }), // data can be `string` or {object}!
+                })
+                location.reload();
+     },
         eliminarCliente(id){
             console.log("ENTRA");
        console.log(id);
@@ -121,6 +167,26 @@ export default {
         })
         location.reload();
    },
+
+    activarEdicion(id){
+       
+       console.log(id);
+       
+       
+       this.axios.get(`http://localhost:3000/consultarCliente/${id}`)
+       .then(res =>{
+
+               this.editar=true;
+               this.clienteEditar = res.data;
+               //console.log("este",this.clienteEditar[0].id_Clientes);
+                
+
+       }).catch(e=>{
+           console.log(e.response)
+       });
+       
+   },
+
          agregarCliente: function(){
 
          fetch('http://localhost:3000/agregarCliente', {
@@ -157,6 +223,8 @@ export default {
         },
         
     },
+
+    
     
 
     
