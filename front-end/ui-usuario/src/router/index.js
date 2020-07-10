@@ -48,7 +48,15 @@ const routes = [
 
     component: () =>import("../views/producto.vue")
 
+  },
+  {
+    path: '/getPrueba',
+    name: 'getPrueba',
+
+    component: () =>import("../views/pruebaProducto.vue")
+
   }
+
 
 
 ];
