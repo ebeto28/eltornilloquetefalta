@@ -4,7 +4,8 @@ import router from "./router";
 import store from "./store";
 import BootstrapVue from 'bootstrap-vue';
 import axios from 'axios'
-import VueAxios from 'vue-axios'
+import VueAxios from 'vue-axios';
+import firebase from 'firebase';
 
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
@@ -14,9 +15,14 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap/dist/css/bootstrap.css'
 
 
+let app = null;
+firebase.auth().onAuthStateChanged(() => {
+  if (!app) {
+    new Vue({
+      router,
+      store,
+      render: h => h(App)
+    }).$mount("#app");
+  }
+})
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount("#app");
