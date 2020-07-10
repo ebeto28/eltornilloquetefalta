@@ -91,6 +91,13 @@ const router= new VueRouter({
 
   },
   {
+    path: '/getPrueba',
+    name: 'getPrueba',
+
+    component: () =>import("../views/pruebaProducto.vue")
+
+  },
+  {
     path: '/getStock',
     name: 'getStock',
 

@@ -3,10 +3,16 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import BootstrapVue from 'bootstrap-vue';
-import axios from 'axios'
+import Vuetify from 'vuetify';
+import axios from 'axios';
 import VueAxios from 'vue-axios';
-import firebase from 'firebase';
 
+Vue.use(Vuetify);
+
+
+Vue.config.productionTip = false;
+Vue.use(BootstrapVue);
+Vue.use(axios,VueAxios);
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(VueAxios, axios);
