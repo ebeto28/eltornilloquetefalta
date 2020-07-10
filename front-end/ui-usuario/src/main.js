@@ -6,6 +6,10 @@ import BootstrapVue from 'bootstrap-vue';
 import Vuetify from 'vuetify';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import firebase from 'firebase';
+
+
+
 
 Vue.use(Vuetify);
 
