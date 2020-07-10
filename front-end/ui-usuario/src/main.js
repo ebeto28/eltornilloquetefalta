@@ -13,6 +13,12 @@ Vue.use(Vuetify);
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(axios,VueAxios);
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
+Vue.config.productionTip = false;
+Vue.use(BootstrapVue);
+Vue.use(VueAxios, axios);
 
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap/dist/css/bootstrap.css'

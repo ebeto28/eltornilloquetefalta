@@ -4,8 +4,9 @@
                     <thead>
                         <tr>
                         
-                      
+                      <th scope="col">id_Categoria </th>
                         <th scope="col">Descripcion </th>
+                        <th scope="col">estado </th>
                        
 
                 <!--         <th scope="col">Direccion</th>
@@ -17,8 +18,10 @@
                     </thead>
                     <tbody>
             <tr v-for="(item, index) in categoria" :key="index">
-            
+                
+            <td>{{item.id_Categoria}}</td>
             <td>{{item.descripcion}}</td>
+            <td>{{item.estado}}</td>
           <!--   <td>{{item.cedula}}</td>
             <td>{{item.nombre_Real}}</td>
             <td>{{item.direccion}}</td>
