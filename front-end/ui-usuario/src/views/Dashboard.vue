@@ -14,8 +14,60 @@
         <router-link to="/articulos">Articulos</router-link>|
         </div>
         <router-view />
+
+
+      
+
+
+<!--         <template v-if="user">
+            
+                <a>
+                        {{user.email}}
+                    
+                   
+                </a>
+
+                <template>>
+ -->
     </div>
+
+
+
+
+
 </template>
 <script>
-export default {};
+/* import {mapMutations, mapGetters} from 'vuex';
+import {mapState} from 'vuex';
+ */
+export default {
+
+    name:"test",
+    data() {
+     
+        return {
+            
+            
+        }
+    },
+    created() {
+        this.verVariable();
+    },
+    methods: {
+        verVariable(){
+            console.log('||'); 
+             console.log('V'); 
+             console.log( "una pa;abra",`${this.$store.state.idemail}`); 
+
+        }
+                        
+        
+    },/* 
+    computed: {
+        ...mapState(['idemail']),
+        ...mapGetters(['getemail'])
+
+    }
+ */
+};
 </script>
