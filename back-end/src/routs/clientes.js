@@ -42,10 +42,10 @@ router.post('/agregarCliente', (req, res) => {
     const sql = 'INSERT INTO clientes SET ?';
     const clientes = {
         id_Clientes: req.body.id_Clientes,
-        contrasenna: req.body.contrasenna,
         nombre: req.body.nombre,
         apellidos: req.body.apellidos,
         telefono: req.body.telefono,
+        email: req.body.email,
         codigopostal: req.body.codigopostal,
         pais: req.body.pais,
         provincia: req.body.provincia,
@@ -63,15 +63,15 @@ router.post('/agregarCliente', (req, res) => {
 
 });
 
-router.put('/modificarClientes/:id', (req, res) => {
+router.put('/editarClientes/:id', (req, res) => {
 
     const { id } = req.params;
-    const { contrasenna, nombre, apellidos, telefono, codigopostal, pais, provincia, canton, distrito, direccionexacta } =
+    const { nombre, apellidos, telefono, codigopostal, pais, provincia, canton, distrito, direccionexacta } =
     req.body;
 
-    const sql = `UPDATE clientes SET contrasenna= '${contrasenna}' , nombre= '${nombre}', apellidos='${apellidos}',
-  telefono='${telefono}', codigopostal='${codigopostal}', pais= '${pais}', provincia= '${provincia} , canton= '${canton} , 
-  distrito= '${distrito}, direccionexacta= '${direccionexacta}'
+    const sql = `UPDATE clientes SET nombre= '${nombre}', apellidos='${apellidos}',
+  telefono='${telefono}', codigopostal='${codigopostal}', pais= '${pais}', provincia= '${provincia}' , canton= '${canton}' , 
+  distrito= '${distrito}', direccionexacta= '${direccionexacta}'
   where id_Clientes=${id}`;
 
     connection.query(sql, error => {
@@ -80,6 +80,18 @@ router.put('/modificarClientes/:id', (req, res) => {
     })
 
 
+});
+router.get('/consultarCorreo/:email', (req, res) => {
+    const { email } = req.params
+    const sql = `SELECT * FROM clientes where email=${email}`;
+    connection.query(sql, (err, results) => {
+        if (err) throw error;
+        if (results.length > 0) {
+            res.json(results);
+        } else {
+            res.send('No hay nada')
+        }
+    })
 });
 
 router.delete('/eliminarClientes/:id', (req, res) => {

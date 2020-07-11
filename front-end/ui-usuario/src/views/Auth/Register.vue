@@ -61,7 +61,7 @@ export default {
           .auth()
           .createUserWithEmailAndPassword(this.email, this.password)
           .then(user => {
-            this.$router.push({ name: "Dashboard" });
+            this.$router.push({ name: "getCliente" });
             console.log(user);
             console.log(db);
 

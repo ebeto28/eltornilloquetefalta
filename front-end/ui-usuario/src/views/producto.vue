@@ -95,9 +95,10 @@
       </v-card>
     </div>
     <!-- TARJETAS PRODUCTOS -->
-    <div v-if="mostrarlista">
-      <DIV v-for="card1 in usuario" :key="card1">
-        {{card1.id_Clientes}}
+    <div v-if="!mostrardescripcion && !mostrarCarrito">
+
+      <DIV>
+        <h1>{{this.$store.state.idemail}}</h1>
       
       <v-card class="mx-auto" max-width="500">
         <v-toolbar color="indigo" dark>
@@ -127,7 +128,7 @@
                   <v-card-title>{{card.nombre}}</v-card-title>
                 </v-img>
 
-                <v-card-subtitle class="pb-0"></v-card-subtitle>
+                <v-card-subtitle class="pb-0">{{card.id_Producto}}</v-card-subtitle>
 
                 <v-card-text class="text--primary">
                   <div>{{card.descripcion}}</div>
@@ -146,13 +147,14 @@
           </v-row>
         </v-container>
       </v-card>
-      </DIV>
+    </DIV>
     </div>
   </div>
 </template>
 
 <script>
 import "vuetify/dist/vuetify.min.css";
+
 
 export default {
   data() {
@@ -196,6 +198,7 @@ export default {
   created() {
     this.listarProducto();
     this.listarCarrito();
+    this.verVariable();
   },
   methods: {
     listarProducto() {
@@ -213,6 +216,12 @@ export default {
           console.log(e.response);
         });
     },
+    verVariable(){
+            console.log('||'); 
+             console.log('V'); 
+             console.log( "una pa;abra",`${this.$store.state.idemail}`); 
+
+        },
     consultarProducto(id) {
       console.log("ENTRA");
       this.mostrardescripcion = true;
@@ -341,32 +350,6 @@ export default {
           id_Cliente: "8",
           id_Producto: id,
           cantidad: cantidad
-        }) // data can be `string` or {object}!
-      })
-        .then(res => res.json())
-        .then(data => console.log(data));
-
-      location.reload();
-    },
-    agregarCliente: function() {
-
-      fetch("http://localhost:3000/agregarCliente", {
-        method: "POST", // or 'PUT'
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          id_Clientes: this.clientes.id_Clientes,
-          contrasenna: `${this.clientes.contrasenna}`,
-          nombre: `${this.clientes.nombre}`,
-          apellidos: `${this.clientes.apellidos}`,
-          telefono: `${this.clientes.telefono}`,
-          codigopostal: `${this.clientes.codigopostal}`,
-          pais: `${this.clientes.pais}`,
-          provincia: `${this.clientes.provincia}`,
-          canton: `${this.clientes.canton}`,
-          distrito: `${this.clientes.distrito}`,
-          direccionexacta: `${this.clientes.direccionexacta}`
         }) // data can be `string` or {object}!
       })
         .then(res => res.json())
