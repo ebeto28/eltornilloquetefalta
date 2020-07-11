@@ -119,7 +119,6 @@ export default {
             mas:false,
             users:[],
             clienteEditar:{},
-
             cliente:[],
             clientes:{
                 id_Clientes:"",
