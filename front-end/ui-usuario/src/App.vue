@@ -7,7 +7,8 @@
       <router-link to="/getStock">Stock</router-link> |
        <router-link to="/getCliente">Clientes</router-link> |
        <router-link to="/getProducto">Productos</router-link> |
-       <router-link to="/getPedido">Pedidos</router-link>
+       <router-link to="/getPedido">Pedidos</router-link> |
+       <router-link to="/getCarrito">Carrito</router-link>
      
     </div>
     <router-view />

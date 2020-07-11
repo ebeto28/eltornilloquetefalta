@@ -11,6 +11,7 @@ app.use(bodyParser.json());
 
 app.use(require('./src/routs/clientes'));
 app.use(require('./src/routs/categoria'));
+app.use(require('./src/routs/carrito'));
 app.use(require('./src/routs/stock.js'));
 app.use(require('./src/routs/pedido.js'));
 app.use(require('./src/routs/producto.js'));
@@ -20,6 +21,6 @@ app.use(require('./src/routs/producto.js'));
         ms:'hola'
     });
 })*/
-app.listen(port, ()=>{
+app.listen(port, () => {
     console.log(`Server on port:${port}`)
 })

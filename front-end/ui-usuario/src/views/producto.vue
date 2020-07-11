@@ -1,111 +1,398 @@
 <template>
-    <div class="container">
-                <table class="table" v-if="!editar">
-                    <thead>
-                        <tr>
-                        
-                        <th scope="col">ID Producto </th>
-                        <th scope="col">ID Categoria </th>
-                        <th scope="col">Nombre </th>
-                        <th scope="col">Precio </th>
-                        <th scope="col">Estado </th>
- 
-                <!--         <th scope="col">Direccion</th>
-                        <th scope="col">Foto</th>
-                        <th scope="col">Acciones</th> -->
-                        
-                        
-                        </tr>
-                    </thead>
-                    <tbody>
-            <tr v-for="(item, index) in producto" :key="index">
-            
-            <td>{{item.id_Producto}}</td>
-            <td>{{item.id_Categoria}}</td>
-            <td>{{item.nombre}}</td>
-            <td>{{item.precio}}</td>
-            <td>{{item.estado}}</td>
-            
-            
+  <div>
+    <!-- TABLA CARRITO -->
+    <table class="table" v-if="mostrarCarrito">
+      <thead>
+        <tr>
+          <th scope="col">Producto</th>
+          <th scope="col">Cantidad</th>
+          <th scope="col">Precio</th>
+          <th scope="col">Subtotal</th>
 
-          <!--   <td>{{item.cedula}}</td>
-            <td>{{item.nombre_Real}}</td>
-            <td>{{item.direccion}}</td>
-            <td>{{item.foto}}</td> -->
-          <!--   <td> <b-button @click="eliminarCategoria(item.id_Categoria)" class="btn-danger btn-sm" >Eliminar</b-button></td>
-             <td> <b-button @click="activarEdicion(item.id_Categoria)" class="btn-warning btn-sm" >Editar</b-button></td> -->
-            </tr>
-            
-        </tbody>
- </table>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in carrito" :key="index">
+          <td>{{item.nombre}}</td>
 
+          <td>
+            <span v-if="formActualizar2 && idActualizar == index">
+              <!-- Formulario para actualizar -->
+              <input
+                v-model="item.cantidad"
+                v-bind:likes="item.cantidad"
+                type="text"
+                class="form-control"
+              />
+            </span>
+            <span v-else>
+              <!-- Dato nombre -->
+              {{item.cantidad}}
+            </span>
+          </td>
+          <td>{{item.precio}}</td>
+          <td>{{item.subtotal}}</td>
+          <td>
+            <span v-if="formActualizar2 && idActualizar == index">
+              <button
+                @click="modificarCarrito(item.id_Transaccion, item.cantidad)"
+                class="btn btn-success"
+              >Guardar</button>
+            </span>
+            <span v-else>
+              <!-- Botón para mostrar el formulario de actualizar -->
+              <button @click="verFormActualizar(index)" class="btn btn-warning">Actualizar</button>
+            </span>
+          </td>
+          <td>
+            <b-button @click="eliminarCarrito(item.id_Transaccion)" class="btn-danger">Eliminar</b-button>
+          </td>
+        </tr>
+      </tbody>
+      <span>
+        <h3></h3>
+      </span>
+    </table>
+    <!-- TARJETA DESCRIPCION -->
+    <div v-if="mostrardescripcion">
+      <v-card class="mx-auto" max-width="400" v-for="(item, index) in producto" :key="index">
+        <v-img
+          class="white--text align-end"
+          height="200px"
+          src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+        >
+          <v-card-title>Top 10 Australian beaches</v-card-title>
+        </v-img>
 
-                        <!--  <form v-if="editar">
-                    <h3>Editar</h3>
+        <v-card-subtitle class="pb-0">{{item.nombre}}</v-card-subtitle>
 
-                    <input type="text" class="form-control my-2" placeholder="Password" v-model="usuarioEditar.passw">
-                    <input type="text" class="form-control my-2" placeholder="Nombre de usuario" v-model="usuarioEditar.nombre_Usuario">
-                    <input type="text" class="form-control my-2" placeholder="Tipo de usuario" v-model="usuarioEditar.tipo">
-                    <input type="text" class="form-control my-2" placeholder="Cedula" v-model="usuarioEditar.cedula">
-                    <input type="text" class="form-control my-2" placeholder="Nombre real" v-model="usuarioEditar.nombreR">
-                    <input type="text" class="form-control my-2" placeholder="Direcciòn" v-model="usuarioEditar.dir">
-                    <input type="text" class="form-control my-2" placeholder="Foto" v-model="usuarioEditar.foto">
-                    <b-button class="btn-warning my-2" type="submit" v-onclick="">Editar</b-button>
-                    <br>
-                    <b-button class=" my-2 " type="submit" v-on:click="editar=false">Cancelar</b-button>
+        <v-card-text class="text--primary">
+          <div></div>
 
-                </form>  -->
-               <!--  <form v-if="!editar" >
-                    <h3>Agregar</h3>
+          <div>{{item.descripcion}}</div>
+        </v-card-text>
 
-                    <input type="text" class="form-control my-2" placeholder="Password" v-model="user.password">
-                    <input type="text" class="form-control my-2" placeholder="Nombre de usuario" v-model="user.nombreUs">
-                    <input type="text" class="form-control my-2" placeholder="Tipo de usuario" v-model="user.tipo">
-                    <input type="text" class="form-control my-2" placeholder="Cedula" v-model="user.cedula">
-                    <input type="text" class="form-control my-2" placeholder="Nombre real" v-model="user.nombreR">
-                    <input type="text" class="form-control my-2" placeholder="Direcciòn" v-model="user.dir">
-                    <input type="text" class="form-control my-2" placeholder="Foto" v-model="user.foto">
-                    <b-button class="btn-success my-2" type="submit" v-on:click="agregarUsuario">Agregar</b-button>
+        <v-card-actions>
+          <div class="form-group">
+            <label for="docente">Cantidad</label>
+            <div>
+              <select v-model="selected" class="form-control">
+                <option
+                  v-for="option in item.cantidad"
+                  :key="option"
+                  v-bind:value="option"
+                >{{ option }}</option>
+              </select>
+            </div>
+          </div>
 
-                </form>
-         -->
+          <v-btn
+            color="orange"
+            text
+            @click="agregarCarrito(item.id_Producto,selected), modificarStock(item.id_Stock, item.id_Producto, selected)"
+          >Agregar a Carrito</v-btn>
+        </v-card-actions>
+      </v-card>
     </div>
-        
-   
-    
+    <!-- TARJETAS PRODUCTOS -->
+    <div v-if="!mostrarlista">
+      <DIV v-for="card1 in usuario" :key="card1">
+        {{card1.id_Clientes}}
+      
+      <v-card class="mx-auto" max-width="500">
+        <v-toolbar color="indigo" dark>
+          <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+          <v-toolbar-title>Discover</v-toolbar-title>
+
+          <v-spacer></v-spacer>
+              <div >
+          </div>
+
+          <v-btn icon>
+            <v-icon>mdi-magnify</v-icon>
+          </v-btn>
+        </v-toolbar>
+
+        <v-container fluid>
+          <v-row dense>
+            <v-col v-for="card in productos" :key="card" cols="12">
+              <v-card>
+                <v-img
+                  src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+                  class="white--text align-end"
+                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                  height="200px"
+                >
+                  <v-card-title>{{card.nombre}}</v-card-title>
+                </v-img>
+
+                <v-card-subtitle class="pb-0"></v-card-subtitle>
+
+                <v-card-text class="text--primary">
+                  <div>{{card.descripcion}}</div>
+                  <div>{{card.precio}}</div>
+                </v-card-text>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <div class="text--primary">AGREGAR AL CARRITO</div>
+                  <v-btn icon @click="consultarProducto(card.id_Producto), mostrarlista=false">
+                    <v-icon>mdi-bookmark</v-icon>
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
+      </DIV>
+    </div>
+  </div>
 </template>
 
 <script>
+import "vuetify/dist/vuetify.min.css";
+
 export default {
-    data(){
-        return{
-            producto:[]
-
-
+  data() {
+    return {
+      producto: [],
+      usuario: [],
+      productos: [],
+      stock: [],
+      formActualizar2: false,
+      carrito: [],
+      clientes: {
+        id_Clientes: "",
+        contrasenna:"",
+        nombre: "",
+        apellidos: "",
+        codigopostal: "",
+        pais: "",
+        provincia: "",
+        canton: "",
+        distrito: "",
+        direccionexacta: "",
+      },
+      login: {
+        id_Clientes: "",
+        contrasenna:"",
+        
+      },
+      carritos: {
+        id_Cliente: "",
+        id_Producto: "",
+        cantidad: "",
+        subtotal: "",
+        idActualizar: -1
+      },
+      mostrarCarrito: false,
+      mostrarlista: true,
+      mostrardescripcion: false,
+      selected: ""
+    };
+  },
+  created() {
+    this.listarProducto();
+    this.listarCarrito();
+  },
+  methods: {
+    listarProducto() {
+      fetch("http://localhost:3000/listarProducto", {
+        headers: {
+          "Content-Type": "application/json"
         }
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          this.productos = data;
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
     },
-    created(){
-        this.listarProducto();
-    },
-    methods:{
-        listarProducto(){
+    consultarProducto(id) {
+      console.log("ENTRA");
+      this.mostrardescripcion = true;
 
-            fetch('http://localhost:3000/listarProducto',{
-                headers:{
-                    'Content-Type':'application/json'
-                }
-            })
-            .then(res=>res.json())
-            .then(data=>{console.log(data)
-            this.producto=data})
-            .catch(e=>{
-                console.log(e.response);
-            })
+      fetch(`http://localhost:3000/consultarProducto/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
         }
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          this.producto = data;
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
     },
-    mounted(){
-        this.listarProducto()
+    consultarClientes(id , contrasenna) {
+      console.log(id, contrasenna);
+      console.log("ENTRA");
+      fetch(`http://localhost:3000/consultarClientes/${id}/'${contrasenna}'`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(res => res.json())
+        .then(data => {
+          
+          this.usuario = data;
+          if(this.usuario){
+            
+              this.mostrarlista = true;
+              this.mostrarLogin=false;
+          }else{
+            this.mostrarLogin=true;
+          }
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
+    },
+    consultarStock() {
+      console.log("ENTRA");
+
+      fetch(`http://localhost:3000/consultarStock/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          this.stock = data;
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
+    },
+    eliminarCarrito(id) {
+      console.log("ENTRA");
+      console.log(id);
+      fetch(`http://localhost:3000/eliminarCarrito/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        }
+        
+      })
+        .then(res => {
+          const index = this.carrito.findIndex(
+            item => item.id_Transaccion === res.data.id_Transaccion
+          );
+          this.carrito.splice(index, 1);
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
+      location.reload();
+    },
+    modificarCarrito(id, cantidad) {
+      console.log("ENTRA");
+      console.log(id, cantidad);
+      fetch(`http://localhost:3000/modificarCarrito/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          id_Transaccion: id,
+          cantidad: cantidad
+        })
+      });
+      location.reload();
+    },
+    modificarStock(id, id_Producto, cantidad) {
+      console.log("ENTRA");
+      console.log(id, cantidad);
+      fetch(`http://localhost:3000/modificarStock/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          id_Producto: id_Producto,
+          cantidad: cantidad
+        })
+      });
+      location.reload();
+    },
+    verFormActualizar: function(id) {
+      this.idActualizar = id;
+      this.formActualizar2 = true;
+    },
+    agregarCarrito: function(id, cantidad) {
+      console.log(id);
+      console.log(cantidad);
+      fetch("http://localhost:3000/agregarCarrito", {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          id_Cliente: "8",
+          id_Producto: id,
+          cantidad: cantidad
+        }) // data can be `string` or {object}!
+      })
+        .then(res => res.json())
+        .then(data => console.log(data));
+
+      location.reload();
+    },
+    agregarCliente: function() {
+
+      fetch("http://localhost:3000/agregarCliente", {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          id_Clientes: this.clientes.id_Clientes,
+          contrasenna: `${this.clientes.contrasenna}`,
+          nombre: `${this.clientes.nombre}`,
+          apellidos: `${this.clientes.apellidos}`,
+          telefono: `${this.clientes.telefono}`,
+          codigopostal: `${this.clientes.codigopostal}`,
+          pais: `${this.clientes.pais}`,
+          provincia: `${this.clientes.provincia}`,
+          canton: `${this.clientes.canton}`,
+          distrito: `${this.clientes.distrito}`,
+          direccionexacta: `${this.clientes.direccionexacta}`
+        }) // data can be `string` or {object}!
+      })
+        .then(res => res.json())
+        .then(data => console.log(data));
+
+      location.reload();
+    },
+    listarCarrito() {
+      fetch("http://localhost:3000/listarCarrito", {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          this.carrito = data;
+          console.log(data);
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
     }
-    
-}
+  },
+  mounted() {
+    this.listarProducto();
+    this.listarCarrito();
+  }
+};
 </script>
