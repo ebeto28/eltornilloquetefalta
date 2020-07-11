@@ -1,6 +1,8 @@
 <template>
     <div class="container">
+        
                 <table class="table" v-if="!editar">
+                    
                     <thead>
                         <tr>
                         
@@ -8,6 +10,7 @@
                         <th scope="col">Nombre </th>
                         <th scope="col">Apellidos </th>
                         <th scope="col">Telefono </th>
+                        <th scope="col">email </th>
                         <th scope="col">Codigo Postal </th>
                         <th scope="col">Paìs </th>
                         <th scope="col">Provincia </th>
@@ -32,6 +35,7 @@
             <td>{{item.nombre}}</td>
             <td>{{item.apellidos}}</td>
             <td>{{item.telefono}}</td>
+            <td>{{item.email}}</td>
             <td>{{item.codigopostal}}</td>
             <td>{{item.pais}}</td>
             <td>{{item.provincia}}</td>
@@ -55,7 +59,7 @@
                     <h3>Agregar</h3>
 
                     <input type="text" class="form-control my-2" placeholder="Cedula" v-model="clientes.id_Clientes">
-                    <input type="password" class="form-control my-2" placeholder="Contraseña" v-model="clientes.contrasenna" >
+                    
                     <input type="text" class="form-control my-2" placeholder="Nombre" v-model="clientes.nombre" >
                     <input type="text" class="form-control my-2" placeholder="Apellidos" v-model="clientes.apellidos">
                     <input type="text" class="form-control my-2" placeholder="Telefono" v-model="clientes.telefono" >
@@ -76,10 +80,11 @@
                     <h3>Editar Cliente</h3>
 
                     
-                    <input type="password" class="form-control my-2" placeholder="Contraseña" v-model="clienteEditar[0].contrasenna" >
+                    
                     <input type="text" class="form-control my-2" placeholder="Nombre" v-model="clienteEditar[0].nombre" >
                     <input type="text" class="form-control my-2" placeholder="Apellidos" v-model="clienteEditar[0].apellidos">
-                    <input type="text" class="form-control my-2" placeholder="Telefono" v-model="clienteEditar[0].telefono" >
+                    <input type="text" class="form-control my-2" placeholder="Telefono" v-model="clienteEditar[0].telefono" >ç
+                   
                     <input type="text" class="form-control my-2" placeholder="Codigo Postal" v-model="clienteEditar[0].codigopostal" >
                     <input type="text" class="form-control my-2" placeholder="Pais" v-model="clienteEditar[0].pais" >
                     <input type="text" class="form-control my-2" placeholder="Provincia" v-model="clienteEditar[0].provincia" >
@@ -102,19 +107,24 @@
 </template>
 
 <script>
+  import firebase from 'firebase';
 export default {
+ 
     data(){
+
         return{
+            mail:"",
             mas:false,
+            users:[],
             clienteEditar:{},
             cliente:[],
             editar:false,
             clientes:{
                 id_Clientes:"",
-                contrasenna:"",
                 nombre:"",
                 apellidos:"",
                 telefono:"",
+                email:"",
                 codigopostal:"",
                 pais:"",
                 provincia:"",
@@ -127,7 +137,19 @@ export default {
         }
     },
     created(){
-        this.listarCategoria();
+        this.listarClientes();
+       
+         firebase.auth().onAuthStateChanged(user =>{
+          
+            this.users=user;
+            if(this.cliente.email==this.users.email){
+                this.listarCategoria(this.cliente.email)
+            }
+            
+          
+        
+      });
+       
     },
     methods:{
          editarCliente: function(id){
@@ -137,14 +159,31 @@ export default {
                 headers:{
                     'Content-Type': 'application/json'
                 },
-               body: JSON.stringify({id_Clientes:this.clienteEditar.id_Clientes,
-                contrasenna:`${this.clienteEditar[0].contrasenna}`,nombre:`${this.clienteEditar[0].nombre}`
+               body: JSON.stringify({id_Clientes:this.clienteEditar.id_Clientes,nombre:`${this.clienteEditar[0].nombre}`
                 ,apellidos:`${this.clienteEditar[0].apellidos}`,
-                telefono:`${this.clienteEditar[0].telefono}`,codigopostal:`${this.clienteEditar[0].codigopostal}`,pais:`${this.clienteEditar[0].pais}`
+                telefono:`${this.clienteEditar[0].telefono}`,
+                email:`${this.users.email}`,codigopostal:`${this.clienteEditar[0].codigopostal}`,pais:`${this.clienteEditar[0].pais}`
                 ,provincia:`${this.clienteEditar[0].provincia}`,canton:`${this.clienteEditar[0].canton}`,distrito:`${this.clienteEditar[0].distrito}`,direccionexacta:`${this.clienteEditar[0].direccionexacta}`
                 }), // data can be `string` or {object}!
                 })
                 location.reload();
+     },
+     listarCliente(){
+        
+    console.log("aquiii");
+            this.mail=this.clientes.email;
+            console.log(this.mail);
+            fetch(`http://localhost:3000/listarClientes/`,{
+                headers:{
+                    'Content-Type':'application/json'
+                }
+            })
+            .then(res=>res.json())
+            .then(data=>{console.log(data)
+            this.cliente=data})
+            .catch(e=>{
+                console.log(e.response);
+            })
      },
         eliminarCliente(id){
             console.log("ENTRA");
@@ -197,7 +236,7 @@ export default {
                 body: JSON.stringify({id_Clientes:this.clientes.id_Clientes,
                 contrasenna:`${this.clientes.contrasenna}`,nombre:`${this.clientes.nombre}`
                 ,apellidos:`${this.clientes.apellidos}`,
-                telefono:`${this.clientes.telefono}`,codigopostal:`${this.clientes.codigopostal}`,pais:`${this.clientes.pais}`
+                telefono:`${this.clientes.telefono}`,email:`${this.user.email}`,codigopostal:`${this.clientes.codigopostal}`,pais:`${this.clientes.pais}`
                 ,provincia:`${this.clientes.provincia}`,canton:`${this.clientes.canton}`,distrito:`${this.clientes.distrito}`,direccionexacta:`${this.clientes.direccionexacta}`
                 }), // data can be `string` or {object}!
                 })
@@ -207,9 +246,11 @@ export default {
                 location.reload();
                         
      }, 
-        listarCategoria(){
-
-            fetch('http://localhost:3000/listarClientes',{
+        listarCategoria(email){
+                console.log("aquiii");
+            this.mail=this.clientes.email;
+            console.log(this.mail);
+            fetch(`http://localhost:3000/consultarCorreo/'${email}'`,{
                 headers:{
                     'Content-Type':'application/json'
                 }

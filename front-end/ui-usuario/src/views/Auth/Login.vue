@@ -50,7 +50,9 @@ export default {
      
       email: "",
       password: "",
-      error: ""
+      error: "",
+      BDmail:"",
+      BDid:"",
     };
   },
   name: "Login",
@@ -62,16 +64,13 @@ export default {
           firebase.auth().signInWithEmailAndPassword(this.email, this.password)
           .then(user => {
               this.$router.push({name: 'Dashboard'})
-               console.log(user)
-                console.log(db) 
+               console.log(user);
+                console.log(db); 
 
+            this.BDmail=this.email;
 
+            console.log("email ",this.BDmail);
 
-       /*        this.email='',
-              this.password=''
-              console.log(user)
-
-              console.log(db) */
 
           }).catch(err=>{
               this.error= err.message
