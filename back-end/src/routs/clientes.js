@@ -25,25 +25,9 @@ router.get('/listarClientes', (req, res) => {
     })
 });
 
-router.get('/consultarClientes/:id/:contrasenna', (req, res) => {
-    const { id, contrasenna } = req.params
-
-    const sql = `SELECT id_Clientes, contrasenna FROM clientes where id_Clientes=${id} && clientes.estado="A" && contrasenna=${contrasenna}`;
-    connection.query(sql, (err, results) => {
-        if (err) throw error;
-        if (results.length > 0) {
-            res.json(results);
-        } else {
-            res.send('No hay nada')
-        }
-    })
-});
-
-router.get('/consultarProducto/:id', (req, res) => {
+router.get('/consultarCliente/:id', (req, res) => {
     const { id } = req.params
-    const sql = `SELECT stock.id_Stock, producto.nombre, stock.cantidad, producto.id_Producto, categoria.id_Categoria, 
-  categoria.descripcion, producto.precio FROM 
-  producto, stock, categoria where stock.id_Producto=producto.id_Producto && producto.id_Categoria=categoria.id_Categoria && producto.id_Producto=${id} group by stock.id_Producto`;
+    const sql = `SELECT * FROM clientes where id_Clientes=${id}`;
     connection.query(sql, (err, results) => {
         if (err) throw error;
         if (results.length > 0) {
