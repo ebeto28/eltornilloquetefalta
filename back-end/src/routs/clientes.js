@@ -46,10 +46,10 @@ router.post('/agregarCliente', (req, res) =>
   const sql = 'INSERT INTO clientes SET ?';
   const clientes = {
     id_Clientes: req.body.id_Clientes,
-    contrasenna: req.body.contrasenna,
     nombre : req.body.nombre,
     apellidos: req.body.apellidos,
     telefono: req.body.telefono, 
+    email: req.body.email,
     codigopostal: req.body.codigopostal,
     pais: req.body.pais, 
     provincia: req.body.provincia,
@@ -71,12 +71,44 @@ router.put('/modificarClientes/:id', (req, res) =>
 {
   
   const{id} = req.params; 
-  const {contrasenna, nombre, apellidos, telefono,codigopostal,pais, provincia, canton, distrito,direccionexacta} =
+  const { nombre, apellidos, telefono,email,codigopostal,pais, provincia, canton, distrito,direccionexacta} =
   req.body;
 
-  const sql = `UPDATE clientes SET contrasenna= '${contrasenna}' , nombre= '${nombre}', apellidos='${apellidos}',
-  telefono='${telefono}', codigopostal='${codigopostal}', pais= '${pais}', provincia= '${provincia}' , canton= '${canton}' , 
+  const sql = `UPDATE clientes SET  nombre= '${nombre}', apellidos='${apellidos}',
+  telefono='${telefono}', email='${email}', codigopostal='${codigopostal}', pais= '${pais}', provincia= '${provincia}' , canton= '${canton}' , 
   distrito= '${distrito}', direccionexacta= '${direccionexacta}'
+  where id_Clientes=${id}`;
+
+  connection.query(sql, error => {
+    if(error) throw error;
+    res.send("usuario modificado");
+  })
+
+
+});
+
+router.get('/consultarCorreo/:email', (req, res) =>
+{
+ const {id}= req.params
+  const sql =`SELECT id_Clientes FROM clientes where email='${email}'`;
+  connection.query(sql, (err, results)=>{
+    if(err) throw error;
+    if(results.length>0){
+      res.json(results);
+    }else{
+      res.send('No hay nada')
+    }
+  } ) 
+});
+
+router.put('/modificarCorreo/:id', (req, res) =>
+{
+  
+  const{id} = req.params; 
+  const {email} =
+  req.body;
+
+  const sql = `UPDATE clientes SET  email='${email}'
   where id_Clientes=${id}`;
 
   connection.query(sql, error => {
