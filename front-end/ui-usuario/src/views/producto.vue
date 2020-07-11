@@ -95,7 +95,7 @@
       </v-card>
     </div>
     <!-- TARJETAS PRODUCTOS -->
-    <div v-if="!mostrarlista">
+    <div v-if="mostrarlista">
       <DIV v-for="card1 in usuario" :key="card1">
         {{card1.id_Clientes}}
       
@@ -137,7 +137,7 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <div class="text--primary">AGREGAR AL CARRITO</div>
-                  <v-btn icon @click="consultarProducto(card.id_Producto), mostrarlista=false">
+                  <v-btn icon @click="consultarProducto(card.id_Producto), mostrarlista=false, mostrardescripcion=true">
                     <v-icon>mdi-bookmark</v-icon>
                   </v-btn>
                 </v-card-actions>
@@ -188,7 +188,7 @@ export default {
         idActualizar: -1
       },
       mostrarCarrito: false,
-      mostrarlista: true,
+      mostrarlista: false,
       mostrardescripcion: false,
       selected: ""
     };

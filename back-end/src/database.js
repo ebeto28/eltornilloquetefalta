@@ -8,6 +8,7 @@ var connection = mysql.createConnection({
     password: '84075358Mf.',
     database: 'mydb',
     insureAuth: true
+});
 
 connection.connect(error => {
     if (error) throw error;

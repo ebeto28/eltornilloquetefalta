@@ -70,7 +70,7 @@ export default {
       if ( this.email && this.password) {
           firebase.auth().signInWithEmailAndPassword(this.email, this.password)
           .then(user => {
-              this.$router.push({name: 'Dashboard'})
+              this.$router.push({name: 'getProducto'})
 
                console.log(user);
                 console.log(db); 
