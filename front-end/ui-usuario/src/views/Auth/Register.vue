@@ -42,6 +42,8 @@
     <script>
 import db from "@/firebase/init";
 import firebase from "firebase";
+import { mapMutations, mapGetters } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   data() {
@@ -63,25 +65,8 @@ export default {
           .then(user => {
             this.$router.push({ name: "getCliente" });
             console.log(user);
+            this.registrarEmail(this.email);
             console.log(db);
-
-            /*   if (user) {
-                  user.updateProfile({
-                      displayName: this.name
-                  })
-                  .them((u)=>{
-                        this.name='',
-                        this.email='',
-                        this.password=''
-                        this.$router.push({name:'Dashboard'})
-                       // si entra valla al home asi/
-                        console.log(user)
-                        console.log(db)
-                        console.log(u)
-                  }).catch((err)=>{
-                      this.error =err.message
-                  })
-              } */
           })
           .catch(err => {
             this.error = err.message;
@@ -91,7 +76,15 @@ export default {
       } else {
         this.error = "Todos los campos son requeridos";
       }
-    }
+    },
+     ...mapMutations(["registrarEmail", "limpiarEmail"])
+    
+  },
+  computed: {
+    ...mapState(["idemail"]),
+    ...mapGetters(["getemail"]),
+    ...mapState(["id"]),
+    ...mapGetters(["getid"])
   }
 };
 </script>

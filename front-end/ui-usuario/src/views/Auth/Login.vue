@@ -1,40 +1,40 @@
                 <template>
   <div class="container">
     <div class="columns">
-        <div class="column is-6 is-offset-3">
-            <h3 class="title is-3">Iniciar Sesion</h3>
-            <hr>
-                <form action="#" @submit.prevent="login">
-                <!--     <div class="field">
+      <div class="column is-6 is-offset-3">
+        <h3 class="title is-3">Iniciar Sesion</h3>
+        <hr />
+        <form action="#" @submit.prevent="login">
+          <!--     <div class="field">
                         <label class="label">Nombre</label>
                         <div class="control">
                             <input class="input" type="text" placeholder="Nombre" v-model="name" />
                             {{name}}
                         </div>
-                    </div> -->
+          </div>-->
 
-                    <div class="field">
-                        <label class="label">Email</label>
-                        <div class="control">
-                        <input class="input" type="email" v-model="email"/>
-                        {{email}}
-                        </div>
-                    </div>
+          <div class="field">
+            <label class="label">Email</label>
+            <div class="control">
+              <input class="input" type="email" v-model="email" />
+              {{email}}
+            </div>
+          </div>
 
-                    <div class="field">
-                        <label class="label">Contraseña</label>
-                        <div class="control">
-                        <input class="input" type="password" v-model="password" />
-                        {{password}}
-                        </div>
-                    </div>
+          <div class="field">
+            <label class="label">Contraseña</label>
+            <div class="control">
+              <input class="input" type="password" v-model="password" />
+              {{password}}
+            </div>
+          </div>
 
-                    <button type="submit" class="button is-primary">Iniciar Sesion</button>
-                </form>
-                <br>
+          <button type="submit" class="button is-primary">Iniciar Sesion</button>
+        </form>
+        <br />
 
-            <div class="notification is-danger" v-if="error">{{error}}</div>
-        </div>
+        <div class="notification is-danger" v-if="error">{{error}}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -77,8 +77,9 @@ export default {
 
                 this.registrarEmail(this.email);
 
-
                 console.log( "una pa;abra",this.$store.state.idemail);
+                console.log("*****************************");
+
 
 
           }).catch(err=>{
@@ -92,6 +93,7 @@ export default {
     },
     limpiarEmail(){
       this.limpiarEmail();
+      
     },
     ...mapMutations(['registrarEmail','limpiarEmail'])
 

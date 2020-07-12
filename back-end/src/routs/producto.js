@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/listarProducto', (req, res) => {
-    const sql = 'SELECT * FROM producto where estado="A"';
+    const sql = 'SELECT * FROM producto, stock where  producto.estado="A"  and stock.id_Producto=producto.id_Producto and stock.cantidad>0';
     connection.query(sql, (err, results) => {
         if (err) throw error;
         if (results.length > 0) {

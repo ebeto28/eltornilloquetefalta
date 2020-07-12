@@ -1,52 +1,72 @@
 <template>
   <div class="container">
-    <h1>{{this.$store.state.idemail}}</h1>
-    <table class="table" v-if="!editar">
-      <thead>
-        <tr>
-          <th scope="col">Nombre</th>
-          <th scope="col">Apellidos</th>
-          <th scope="col">Telefono</th>
-          <th scope="col">email</th>
-          <th scope="col">Codigo Postal</th>
-          <th scope="col">Paìs</th>
-          <th scope="col">Provincia</th>
-          <th scope="col">Canton</th>
-          <th scope="col">Distrito</th>
-          <th scope="col">Direccion</th>
-          <th scope="col">Acciones</th>
+    <v-card
+    max-width="400"
+    class="mx-auto"
+    v-for="(item, index) in cliente" :key="index"
+  >
+    <v-container>
+      <v-row dense>
+        <v-col cols="12">
+          <v-card
+            color="#189171"
+            dark
+          >
+            <v-card-title class="headline"><b>{{item.nombre  }} {{item.apellidos }}</b></v-card-title>
+            
+            <v-card-subtitle> <b>Contacto:</b></v-card-subtitle>
 
-          <!--         <th scope="col">Direccion</th>
-                        <th scope="col">Foto</th>
-          <th scope="col">Acciones</th>-->
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, index) in cliente" :key="index">
-          <td>{{item.nombre}}</td>
-          <td>{{item.apellidos}}</td>
-          <td>{{item.telefono}}</td>
-          <td>{{item.email}}</td>
-          <td>{{item.codigopostal}}</td>
-          <td>{{item.pais}}</td>
-          <td>{{item.provincia}}</td>
-          <td>{{item.canton}}</td>
-          <td>{{item.distrito}}</td>
-          <td>{{item.direccionexacta}}</td>
-          <td>
-            <b-button @click="eliminarCliente(item.id_Clientes)" class="btn-danger btn-sm">Eliminar</b-button>
-          </td>
-          <td>
-            <b-button @click="activarEdicion(item.id_Usuario)" class="btn-warning btn-sm">Editar</b-button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            <v-card-subtitle>Telefono: {{item.telefono}}</v-card-subtitle>
+            <v-card-subtitle>E-mail: {{item.email}}</v-card-subtitle>
+            <v-card-subtitle><b>Direccion:</b></v-card-subtitle>
+            <v-card-subtitle>{{item.pais}},{{item.provincia}},{{item.canton}}, {{item.distrito}}, {{item.direccionexacta}},{{item.codigopostal}}</v-card-subtitle>
+            
+
+            <v-card-actions>
+              
+            </v-card-actions>
+          </v-card>
+        </v-col>
+
+        <v-col
+          v-for="(item, i) in items"
+          :key="i"
+          cols="12"
+        >
+          <v-card
+            :color="item.color"
+            dark
+          >
+            <div class="d-flex flex-no-wrap justify-space-between">
+              <div>
+                <v-card-title
+                  class="headline"
+                  v-text="item.title"
+                ></v-card-title>
+
+                <v-card-subtitle v-text="item.artist"></v-card-subtitle>
+              </div>
+
+              <v-avatar
+                class="ma-3"
+                size="125"
+                tile
+              >
+                <v-img :src="item.src"></v-img>
+              </v-avatar>
+            </div>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-card>
+
+    
     <form v-if="mostraragregar">
       <h3>Agregar</h3>
 
       <input
-        type="text"
+        type="number"
         class="form-control my-2"
         placeholder="Cedula"
         v-model="clientes.id_Clientes"
@@ -60,7 +80,7 @@
         v-model="clientes.apellidos"
       />
       <input
-        type="text"
+        type="number"
         class="form-control my-2"
         placeholder="Telefono"
         v-model="clientes.telefono"
@@ -101,9 +121,9 @@
 
       <br />
       <b-button
-        class="btn-success my-2"
+        class="button is-primary"
         type="submit"
-        @click.prevent="agregarCliente(), mostraragregar=false"
+        @click="agregarCliente(), mostraragregar=false"
       >Agregar</b-button>
     </form>
 
@@ -119,12 +139,7 @@
         "
       />
 
-      <input
-        type="text"
-        class="form-control my-2"
-        placeholder="Nombre"
-        v-model="cliente[0].nombre"
-      />
+      <input type="text" class="form-control my-2" placeholder="Nombre" v-model="cliente[0].nombre" />
       <input
         type="text"
         class="form-control my-2"
@@ -132,43 +147,33 @@
         v-model="cliente[0].apellidos"
       />
       <input
-        type="text"
+        type="number"
         class="form-control my-2"
         placeholder="Telefono"
         v-model="cliente[0].telefono"
       />
       <input
         type="text"
-         disabled="validated ? disabled"
+        disabled="validated ? disabled"
         class="form-control my-2"
         placeholder="Email"
         v-model="cliente[0].email"
       />
-      
+
       <input
         type="text"
         class="form-control my-2"
         placeholder="Codigo Postal"
         v-model="cliente[0].codigopostal"
       />
-      <input
-        type="text"
-        class="form-control my-2"
-        placeholder="Pais"
-        v-model="cliente[0].pais"
-      />
+      <input type="text" class="form-control my-2" placeholder="Pais" v-model="cliente[0].pais" />
       <input
         type="text"
         class="form-control my-2"
         placeholder="Provincia"
         v-model="cliente[0].provincia"
       />
-      <input
-        type="text"
-        class="form-control my-2"
-        placeholder="Canton"
-        v-model="cliente[0].canton"
-      />
+      <input type="text" class="form-control my-2" placeholder="Canton" v-model="cliente[0].canton" />
       <input
         type="text"
         class="form-control my-2"
@@ -184,16 +189,21 @@
 
       <br />
       <b-button
-        class="btn-success my-2"
+        class="button is-primary"
         type="submit"
         @click.prevent="editarCliente(cliente[0].id_Clientes)"
-      >Editar</b-button>
+      >Guardar</b-button>
+      
       <br />
-       </form>
+    </form>
   </div>
 </template>
 
 <script>
+import {mapMutations, mapGetters} from 'vuex';
+import {mapState} from 'vuex';
+import "vuetify/dist/vuetify.min.css";
+
 export default {
   data() {
     return {
@@ -339,7 +349,9 @@ export default {
         .then(res => res.json())
         .then(data => {
           console.log(data);
+          
           this.cliente = data;
+          this.registrarId(this.cliente[0].id_Clientes);
           this.mostrareditar = true;
            
         })
@@ -347,8 +359,21 @@ export default {
           this.mostraragregar = true;
           console.log(e.response);
         });
-    }
+        
+    },
+    limpiarId(){
+      this.limpiarId();
+    },
+    ...mapMutations(['registrarId','limpiarId']),
+    ...mapMutations(['registrarId','limpiarId'])
   },
+  computed: {
+        ...mapState(['id']),
+        ...mapGetters(['getid']),
+        ...mapState(['id']),
+        ...mapGetters(['getid'])
+
+    },
 
   mounted() {
     this.listarCategoria();

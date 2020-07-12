@@ -22,6 +22,9 @@ const router = new VueRouter({
             path: "/",
             name: "home",
             component: Home,
+            meta: {
+                requiresAuth: true
+            }
             /*   meta:{
                 requiresAuth:true
               } */
@@ -75,7 +78,10 @@ const router = new VueRouter({
             name: 'getCliente',
 
             component: () =>
-                import ("../views/Cliente.vue")
+                import ("../views/Cliente.vue"),
+            meta: {
+                requiresAuth: true
+            }
 
         },
         {
@@ -91,7 +97,10 @@ const router = new VueRouter({
             name: 'getProducto',
 
             component: () =>
-                import ("../views/producto.vue")
+                import ("../views/producto.vue"),
+            meta: {
+                requiresAuth: true
+            }
 
         },
         {
@@ -120,8 +129,10 @@ const router = new VueRouter({
             name: 'Carrito',
 
             component: () =>
-                import ("../views/Carrito.vue")
-
+                import ("../views/Carrito.vue"),
+            meta: {
+                requiresAuth: true
+            }
         }
 
     ]

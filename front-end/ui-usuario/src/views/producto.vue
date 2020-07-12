@@ -1,67 +1,17 @@
 <template>
   <div>
-    <!-- TABLA CARRITO -->
-    <table class="table" v-if="mostrarCarrito">
-      <thead>
-        <tr>
-          <th scope="col">Producto</th>
-          <th scope="col">Cantidad</th>
-          <th scope="col">Precio</th>
-          <th scope="col">Subtotal</th>
-
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, index) in carrito" :key="index">
-          <td>{{item.nombre}}</td>
-
-          <td>
-            <span v-if="formActualizar2 && idActualizar == index">
-              <!-- Formulario para actualizar -->
-              <input
-                v-model="item.cantidad"
-                v-bind:likes="item.cantidad"
-                type="text"
-                class="form-control"
-              />
-            </span>
-            <span v-else>
-              <!-- Dato nombre -->
-              {{item.cantidad}}
-            </span>
-          </td>
-          <td>{{item.precio}}</td>
-          <td>{{item.subtotal}}</td>
-          <td>
-            <span v-if="formActualizar2 && idActualizar == index">
-              <button
-                @click="modificarCarrito(item.id_Transaccion, item.cantidad)"
-                class="btn btn-success"
-              >Guardar</button>
-            </span>
-            <span v-else>
-              <!-- Botón para mostrar el formulario de actualizar -->
-              <button @click="verFormActualizar(index)" class="btn btn-warning">Actualizar</button>
-            </span>
-          </td>
-          <td>
-            <b-button @click="eliminarCarrito(item.id_Transaccion)" class="btn-danger">Eliminar</b-button>
-          </td>
-        </tr>
-      </tbody>
-      <span>
-        <h3></h3>
-      </span>
-    </table>
+    
     <!-- TARJETA DESCRIPCION -->
     <div v-if="mostrardescripcion">
+
+      
       <v-card class="mx-auto" max-width="400" v-for="(item, index) in producto" :key="index">
         <v-img
           class="white--text align-end"
           height="200px"
           src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
         >
-          <v-card-title>Top 10 Australian beaches</v-card-title>
+          <v-card-title></v-card-title>
         </v-img>
 
         <v-card-subtitle class="pb-0">{{item.nombre}}</v-card-subtitle>
@@ -83,22 +33,26 @@
                   v-bind:value="option"
                 >{{ option }}</option>
               </select>
+              <span></span>
             </div>
           </div>
+          
 
-          <v-btn
+          <v-btn 
             color="orange"
             text
-            @click="agregarCarrito(item.id_Producto,selected), modificarStock(item.id_Stock, item.id_Producto, selected)"
+            @click.prevent="agregarCarrito(item.id_Producto,selected), modificarStock(item.id_Stock, item.id_Producto, selected)"
           >Agregar a Carrito</v-btn>
+          <span class="material-icons">
+add_shopping_cart
+</span>
         </v-card-actions>
       </v-card>
     </div>
     <!-- TARJETAS PRODUCTOS -->
-    <div v-if="!mostrardescripcion && !mostrarCarrito">
+    <div v-if="!mostrardescripcion ">
 
       <DIV>
-        <h1>{{this.$store.state.idemail}}</h1>
       
       <v-card class="mx-auto" max-width="500">
         <v-toolbar color="indigo" dark>
@@ -128,18 +82,20 @@
                   <v-card-title>{{card.nombre}}</v-card-title>
                 </v-img>
 
-                <v-card-subtitle class="pb-0">{{card.id_Producto}}</v-card-subtitle>
+                <v-card-subtitle class="pb-0">{{card.nombre}}</v-card-subtitle>
 
                 <v-card-text class="text--primary">
                   <div>{{card.descripcion}}</div>
-                  <div>{{card.precio}}</div>
+                  <div>{{card.precio}}/cd</div>
                 </v-card-text>
 
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <div class="text--primary">AGREGAR AL CARRITO</div>
-                  <v-btn icon @click="consultarProducto(card.id_Producto), mostrarlista=false, mostrardescripcion=true">
-                    <v-icon>mdi-bookmark</v-icon>
+                  
+                  <v-btn  @click="consultarProducto(card.id_Producto), mostrarlista=false, mostrardescripcion=true">
+                    <span class="material-icons">
+info
+</span>
                   </v-btn>
                 </v-card-actions>
               </v-card>
@@ -155,12 +111,15 @@
 <script>
 import "vuetify/dist/vuetify.min.css";
 
+import {mapMutations, mapGetters} from 'vuex';
+import {mapState} from 'vuex';
 
 export default {
   data() {
     return {
       producto: [],
       usuario: [],
+      cliente: [],
       productos: [],
       stock: [],
       formActualizar2: false,
@@ -192,15 +151,24 @@ export default {
       mostrarCarrito: false,
       mostrarlista: false,
       mostrardescripcion: false,
-      selected: ""
+      selected: 0,
+      total:0
     };
   },
   created() {
+   
     this.listarProducto();
-    this.listarCarrito();
-    this.verVariable();
+    this.listarCliente();
+   
   },
   methods: {
+
+    sumarTotal(){
+      this.total="hola";
+      console.log(this.total);
+    }
+    ,
+   
     listarProducto() {
       fetch("http://localhost:3000/listarProducto", {
         headers: {
@@ -283,27 +251,6 @@ export default {
           console.log(e.response);
         });
     },
-    eliminarCarrito(id) {
-      console.log("ENTRA");
-      console.log(id);
-      fetch(`http://localhost:3000/eliminarCarrito/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json"
-        }
-        
-      })
-        .then(res => {
-          const index = this.carrito.findIndex(
-            item => item.id_Transaccion === res.data.id_Transaccion
-          );
-          this.carrito.splice(index, 1);
-        })
-        .catch(e => {
-          console.log(e.response);
-        });
-      location.reload();
-    },
     modificarCarrito(id, cantidad) {
       console.log("ENTRA");
       console.log(id, cantidad);
@@ -338,16 +285,33 @@ export default {
       this.idActualizar = id;
       this.formActualizar2 = true;
     },
+     listarCliente() {
+      fetch(`http://localhost:3000/listarClientes/`, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          this.cliente = data;
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
+    },
     agregarCarrito: function(id, cantidad) {
       console.log(id);
       console.log(cantidad);
+      console.log("------------------------");
+      console.log(this.cliente.id_Clientes);
       fetch("http://localhost:3000/agregarCarrito", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          id_Cliente: "8",
+          id_Clientes: this.$store.state.id,
           id_Producto: id,
           cantidad: cantidad
         }) // data can be `string` or {object}!
@@ -355,27 +319,26 @@ export default {
         .then(res => res.json())
         .then(data => console.log(data));
 
-      location.reload();
+
     },
-    listarCarrito() {
-      fetch("http://localhost:3000/listarCarrito", {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-        .then(res => res.json())
-        .then(data => {
-          this.carrito = data;
-          console.log(data);
-        })
-        .catch(e => {
-          console.log(e.response);
-        });
-    }
+    
+    limpiarId(){
+      this.limpiarId();
+    },
+    ...mapMutations(['registrarId','limpiarId']),
+    ...mapMutations(['registrarId','limpiarId'])
   },
+  computed: {
+        ...mapState(['id']),
+        ...mapGetters(['getid']),
+        ...mapState(['id']),
+        ...mapGetters(['getid'])
+
+    },
   mounted() {
     this.listarProducto();
-    this.listarCarrito();
+
+    this.listarCliente();
   }
 };
 </script>
